@@ -1,0 +1,11 @@
+{application,iris_ex,
+             [{modules,['Elixir.Bot','Elixir.IrisEx',
+                        'Elixir.IrisEx.Application','Elixir.IrisEx.Bot',
+                        'Elixir.IrisEx.Bot.DSL','Elixir.IrisEx.Bot.Registry',
+                        'Elixir.IrisEx.Client','Elixir.IrisEx.Config']},
+              {optional_applications,[]},
+              {applications,[kernel,stdlib,elixir,logger,httpoison,websockex]},
+              {description,"iris_ex"},
+              {registered,[]},
+              {vsn,"0.1.0"},
+              {mod,{'Elixir.IrisEx.Application',[]}}]}.
