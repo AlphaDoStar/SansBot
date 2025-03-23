@@ -38,7 +38,7 @@ defmodule SansBot do
       match ~r/^!eval\s+(.+)/ do
         [code] = args
 
-        result = case SansBot.InteractiveShell.evaluate(code) do
+        result = case InteractiveShell.evaluate(code) do
           {:ok, result} -> result
           {:error, reason} -> reason
         end
@@ -47,7 +47,13 @@ defmodule SansBot do
       end
 
       match "!reset" do
-        SansBot.InteractiveShell.reset()
+        InteractiveShell.reset()
+        |> reply()
+      end
+
+      match "!chat" do
+        chat
+        |> inspect()
         |> reply()
       end
     end

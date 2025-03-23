@@ -3,5 +3,5 @@ defmodule SansBot.Application do
     bots: [SansBot],
     ws_url: "ws://192.168.0.17:3000/ws",
     http_url: "http://192.168.0.17:3000",
-    children: [SansBot.InteractiveShell]
+    children: [InteractiveShell]
 end

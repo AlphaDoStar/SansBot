@@ -1,4 +1,4 @@
-defmodule SansBot.InteractiveShell do
+defmodule InteractiveShell do
   use GenServer
 
   def start_link(_opts) do
