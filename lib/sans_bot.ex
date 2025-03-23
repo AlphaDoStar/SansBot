@@ -8,7 +8,6 @@ defmodule SansBot do
 
     match "와 샌즈" do
       reply("언더테일 아시는구나!")
-
     end
 
     match "진.짜" do
@@ -32,6 +31,24 @@ defmodule SansBot do
       case result do
         {:ok, base64} -> reply_image(base64)
         {:error, reason} -> reply(reason)
+      end
+    end
+
+    if chat.sender.name === "AlphaDo" do
+      match ~r/^!eval\s+(.+)/ do
+        [code] = args
+
+        result = case SansBot.InteractiveShell.evaluate(code) do
+          {:ok, result} -> result
+          {:error, reason} -> reason
+        end
+
+        reply(result)
+      end
+
+      match "!reset" do
+        SansBot.InteractiveShell.reset()
+        |> reply()
       end
     end
   end
