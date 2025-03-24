@@ -14,8 +14,8 @@ defmodule SansBot.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger],
-      mod: {SansBot.Application, []}
+      extra_applications: [:httpoison],
+      mod: {Core.Application, []}
     ]
   end
 

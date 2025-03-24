@@ -1,21 +1,21 @@
 # SansBot
 
-**TODO: Add description**
+IrisEx를 활용하여 작성한 봇 애플리케이션 예제입니다.
+- https://github.com/AlphaDoStar/IrisEx
 
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed
 by adding `sans_bot` to your list of dependencies in `mix.exs`:
 
+아직 Hex를 지원하지 않으므로, 의존성을 git으로부터 가져와야 합니다.
+
 ```elixir
 def deps do
   [
-    {:sans_bot, "~> 0.1.0"}
+    {:iris_ex, git: "https://github.com/AlphaDoStar/IrisEx.git"}
   ]
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at <https://hexdocs.pm/sans_bot>.
-
+코드 예시는 lib/ 디렉토리에서 확인할 수 있습니다.

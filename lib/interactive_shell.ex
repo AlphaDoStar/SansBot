@@ -26,10 +26,10 @@ defmodule InteractiveShell do
   def handle_call({:eval, code}, _from, bindings) do
     try do
       {result, new_bindings} = Code.eval_string(code, bindings)
-      {:reply, {:ok, inspect(result)}, new_bindings}
+      {:reply, {:ok, inspect(result, pretty: true)}, new_bindings}
     rescue
       error ->
-        {:reply, {:error, inspect(error)}, bindings}
+        {:reply, {:error, inspect(error, pretty: true)}, bindings}
     end
   end
 

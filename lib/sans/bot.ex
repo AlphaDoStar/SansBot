@@ -1,4 +1,4 @@
-defmodule SansBot do
+defmodule Sans.Bot do
   use IrisEx.Bot
 
   on :message do
@@ -14,7 +14,7 @@ defmodule SansBot do
       reply("겁.나.어.렵.습.니.다")
     end
 
-    match ~r/^!send (.+)$/ do
+    match ~r/^!send (.+)$/s do
       [image_url] = args
 
       result = case HTTPoison.get(image_url) do
@@ -53,7 +53,7 @@ defmodule SansBot do
 
       match "!chat" do
         chat
-        |> inspect()
+        |> inspect(pretty: true)
         |> reply()
       end
     end
