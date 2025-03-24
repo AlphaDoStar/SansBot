@@ -5,9 +5,6 @@ IrisEx를 활용하여 작성한 봇 애플리케이션 예제입니다.
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `sans_bot` to your list of dependencies in `mix.exs`:
-
 아직 Hex를 지원하지 않으므로, 의존성을 git으로부터 가져와야 합니다.
 
 ```elixir
