@@ -14,7 +14,7 @@ defmodule Sans.Bot do
       reply("겁.나.어.렵.습.니.다")
     end
 
-    match ~r/^!send (.+)$/s do
+    match ~r/^!send (.+)$/ do
       [image_url] = args
 
       result = case HTTPoison.get(image_url) do
@@ -35,7 +35,7 @@ defmodule Sans.Bot do
     end
 
     if chat.sender.name === "AlphaDo" do
-      match ~r/^!eval\s+(.+)/ do
+      match ~r/^!eval\s+(.+)/s do
         [code] = args
 
         result = case InteractiveShell.evaluate(code) do

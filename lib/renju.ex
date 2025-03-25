@@ -1,5 +1,5 @@
 defmodule Renju do
-  @api_url "https://renju.saroro.dev"
+  @base_url "https://renju.saroro.dev"
   @content_type [{"Content-Type", "application/json"}]
 
   def create(user_id) do
@@ -14,27 +14,39 @@ defmodule Renju do
   end
 
   def move(user_id, pos) do
-    url = @api_url <> "/api/renju/move"
-    body = JSON.encode!(%{
-      session_id: Renju.SessionManager.get(user_id),
-      pos: pos
-    })
+    case Renju.SessionManager.get(user_id) do
+      nil ->
+        {:error, "게임이 시작되지 않았습니다."}
 
-    with {:ok, response_body} <- make_post_request(url, body),
-      {:ok, base64} <- fetch_image_base64(response_body) do
-      {:ok, {response_body, base64}}
-    else
-      {:error, reason} -> {:error, reason}
+      session_id ->
+        url = @base_url <> "/api/renju/move"
+        body = JSON.encode!(%{
+          session_id: session_id,
+          pos: pos
+        })
+
+        with {:ok, response_body} <- make_post_request(url, body),
+          {:ok, base64} <- fetch_image_base64(response_body) do
+          if String.ends_with?(response_body["result"], "_wins"), do: delete(user_id)
+          {:ok, {response_body, base64}}
+        else
+          {:error, reason} -> {:error, reason}
+        end
     end
   end
 
-  def delete(user_id), do: Renju.SessionManager.delete(user_id)
+  def delete(user_id) do
+    url = @base_url <> "/api/renju/remove_game"
+    body = JSON.encode!(%{session_id: Renju.SessionManager.get(user_id)})
+    make_post_request(url, body)
+    Renju.SessionManager.delete(user_id)
+  end
 
   defp create_game do
-    url = @api_url <> "/api/renju/create_game"
+    url = @base_url <> "/api/renju/create_game"
     body = JSON.encode!(%{
       ai_setting: %{
-        turn_time: 5000,
+        turn_time: 3000,
         handicap: 0,
         strength: 100
       }
@@ -44,7 +56,7 @@ defmodule Renju do
   end
 
   defp make_post_request(url, body) do
-    case HTTPoison.post(url, body, @content_type) do
+    case HTTPoison.post(url, body, @content_type, recv_timeout: 10_000) do
       {:ok, %HTTPoison.Response{status_code: 201, body: response_body}} ->
         JSON.decode(response_body)
 
@@ -60,7 +72,7 @@ defmodule Renju do
   defp extract_session_id(_), do: {:error, "세션 ID 추출 실패"}
 
   defp fetch_image_base64(%{"image_url" => image_url}) do
-    case get_image(@api_url <> image_url) do
+    case get_image(@base_url <> image_url) do
       {:ok, body} -> {:ok, Base.encode64(body)}
       {:error, reason} -> {:error, reason}
     end
