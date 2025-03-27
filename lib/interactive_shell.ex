@@ -6,7 +6,7 @@ defmodule InteractiveShell do
   end
 
   def evaluate(code) do
-    GenServer.call(__MODULE__, {:eval, code})
+    GenServer.call(__MODULE__, {:eval, code}, 60_000)
   end
 
   def get_context do
