@@ -14,7 +14,28 @@ defmodule Sans.Bot do
       reply("겁.나.어.렵.습.니.다")
     end
 
-    match ~r/^!send (.+)$/ do
+    match ~r/^!gemini\s+(.+)/s do
+      [text] = args
+
+      sliced_text = if String.length(text) > 15,
+        do: String.slice(text, 0, 15) <> "...",
+        else: text
+
+      reply("""
+      "#{sliced_text}"
+      질문에 대한 답변을 요청합니다.
+      잠시만 기다려 주세요.
+      """)
+
+      compress = String.duplicate("\u202e", 500)
+      text
+      |> MarkdownConverter.md_to_text()
+      |> Gemini.question()
+      |> String.replace("\n", "#{compress}\n", global: false)
+      |> reply()
+    end
+
+    match ~r/^!send\s+(.+)$/ do
       [image_url] = args
 
       result = case HTTPoison.get(image_url) do
@@ -38,7 +59,7 @@ defmodule Sans.Bot do
       match ~r/^!eval\s+(.+)/s do
         [code] = args
 
-        result = case InteractiveShell.evaluate(code) do
+        result = case InteractiveShell.evaluate_with_chat(code, chat) do
           {:ok, result} -> result
           {:error, reason} -> reason
         end

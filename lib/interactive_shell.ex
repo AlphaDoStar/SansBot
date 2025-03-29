@@ -9,6 +9,10 @@ defmodule InteractiveShell do
     GenServer.call(__MODULE__, {:eval, code}, 60_000)
   end
 
+  def evaluate_with_chat(code, chat) do
+    GenServer.call(__MODULE__, {:eval_with_chat, code, chat}, 60_000)
+  end
+
   def get_context do
     GenServer.call(__MODULE__, :get_context)
   end
@@ -26,6 +30,18 @@ defmodule InteractiveShell do
   def handle_call({:eval, code}, _from, bindings) do
     try do
       {result, new_bindings} = Code.eval_string(code, bindings)
+      {:reply, {:ok, inspect(result, pretty: true)}, new_bindings}
+    rescue
+      error ->
+        {:reply, {:error, inspect(error, pretty: true)}, bindings}
+    end
+  end
+
+  @impl true
+  def handle_call({:eval_with_chat, code, chat}, _from, bindings) do
+    try do
+      updated_bindings = Keyword.put(bindings, :chat, chat)
+      {result, new_bindings} = Code.eval_string(code, updated_bindings)
       {:reply, {:ok, inspect(result, pretty: true)}, new_bindings}
     rescue
       error ->
