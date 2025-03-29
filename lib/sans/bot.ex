@@ -28,9 +28,10 @@ defmodule Sans.Bot do
       """)
 
       compress = String.duplicate("\u202e", 500)
+
       text
-      |> MarkdownConverter.md_to_text()
       |> Gemini.question()
+      |> MarkdownConverter.md_to_text()
       |> String.replace("\n", "#{compress}\n", global: false)
       |> reply()
     end
