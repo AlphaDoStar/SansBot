@@ -27,7 +27,7 @@ defmodule Sans.Bot do
       잠시만 기다려 주세요.
       """)
 
-      compress = String.duplicate("\u202e", 500)
+      compress = String.duplicate("\u200b", 500)
 
       text
       |> Gemini.question()
