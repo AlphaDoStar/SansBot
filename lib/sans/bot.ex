@@ -2,15 +2,15 @@ defmodule Sans.Bot do
   use IrisEx.Bot
 
   on :message do
-    match "와" do
+    match "!와" do
       reply("샌즈")
     end
 
-    match "와 샌즈" do
+    match "!와 샌즈" do
       reply("언더테일 아시는구나!")
     end
 
-    match "진.짜" do
+    match "!진.짜" do
       reply("겁.나.어.렵.습.니.다")
     end
 
@@ -57,6 +57,10 @@ defmodule Sans.Bot do
     end
 
     if chat.sender.name === "AlphaDo" do
+      match "와" do
+        reply("샌즈")
+      end
+
       match ~r/^!eval\s+(.+)/s do
         [code] = args
 
@@ -70,6 +74,7 @@ defmodule Sans.Bot do
 
       match "!reset" do
         InteractiveShell.reset()
+        |> Atom.to_string()
         |> reply()
       end
 
