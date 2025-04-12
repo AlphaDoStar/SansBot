@@ -1,5 +1,5 @@
 defmodule Gemini do
-  @base_url "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro-exp-03-25:generateContent?key="
+  @base_url "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key="
 
   def question(text) do
     api_key = System.get_env("GEMINI_API_KEY", "")
